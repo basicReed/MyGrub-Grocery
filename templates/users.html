@@ -1,7 +1,9 @@
 {% extends 'base.html' %} {% block content %}
+
 <div class="asd">
-  <h2>User {{g.user.username}} Is In!</h2>
+  <h2>User {{g.user.username}} Profile</h2>
 </div>
+
 {% for category, message in get_flashed_messages(with_categories=True) %}
 <div class="alert alert-{{ category }}">{{ message }}</div>
 {% endfor %} {% endblock %}

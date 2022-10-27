@@ -25,7 +25,7 @@ toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
-db.drop_all()
+# db.drop_all()
 db.create_all()
 
 ##############################################################################
@@ -118,6 +118,22 @@ def signup():
     else:
         return render_template('signup.html', form=form)
 
+##############################################################################
+# User Pages
+
+
+#ERROR 404 for js file???
+
+@app.route('/user/<int:user_id>')
+def show_user_profile(user_id):
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('users.html', user=user)
 
 
 ##############################################################################
@@ -128,7 +144,6 @@ def signup():
 def homepage():
     """Show homepage:
     """
-    print(g.user)
     if g.user:
         return render_template('recipes.html')
     else:

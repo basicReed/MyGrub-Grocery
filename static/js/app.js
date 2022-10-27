@@ -3,6 +3,7 @@
 $(".btn").click(function () {
   $(this).toggleClass("click");
   $(".sidebar").toggleClass("show");
+  console.log("Ive been clicked");
 });
 
 $(".feat-btn").click(function () {

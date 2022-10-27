@@ -51,12 +51,56 @@ h2 {
 }
 
 /* #######################*/
+/* Top Nav Bar*/
+/* #######################*/
+
+#nav-bar-top {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#nav-top-container {
+  width: 93%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+#nav-filler {
+  width: 40px;
+}
+
+.nav-logo {
+  margin: 0 auto;
+  display: inline-block;
+}
+
+#nav-logo-txt {
+  font-size: 50px;
+  display: inline-block;
+  color: rgb(253, 97, 27);
+  font-weight: bold;
+}
+
+#nav-user-icon {
+  display: block;
+  margin: auto 0;
+  color: #202020;
+}
+
+#nav-user-icon:hover {
+  opacity: 0.8;
+  color: rgb(253, 97, 27);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+/* #######################*/
 /* Navigation*/
 /* #######################*/
 
 .btn {
   position: absolute;
-  top: 15px;
+  top: 19px;
   left: 45px;
   height: 45px;
   width: 45px;
@@ -66,6 +110,7 @@ h2 {
   transition: left 0.4s ease;
   z-index: 10;
 }
+
 .btn.click {
   left: 310px;
 }
@@ -94,7 +139,7 @@ h2 {
   color: #1e1e1e;
   font-size: 25px;
   font-weight: 600;
-  line-height: 65px;
+  line-height: 75px;
   text-align: center;
   background: white;
   letter-spacing: 1px;
@@ -171,6 +216,11 @@ nav ul li a span {
 nav ul li a span.rotate {
   transform: translateY(-50%) rotate(-180deg);
 }
+
+/* #######################*/
+/* Header Collumns*/
+/* #######################*/
+
 .content {
   position: absolute;
   top: 50%;
