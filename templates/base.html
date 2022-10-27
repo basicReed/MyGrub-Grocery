@@ -4,7 +4,60 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <link rel="stylesheet" href="/static/app.css" />
     <title>MyGrub Grocery</title>
   </head>
-  <body></body>
+  <body>
+    <div class="btn">
+      <svg
+        width="35"
+        height="35"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-6 h-6 nav-icon"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
+        />
+      </svg>
+    </div>
+
+    <!--  ####################### -->
+    <!-- NAV OPTIONS -->
+
+    <nav class="sidebar">
+      <div class="text">Hey There!</div>
+      <ul>
+        {% if not g.user %}
+        <li class="active"><a href="/login">Log In</a></li>
+        <li><a href="/signup">Sign Up</a></li>
+
+        {% else %}
+        <li class="active"><a href="#">Recipes</a></li>
+        <li><a href="#">Favorites</a></li>
+        <li><a href="#">Groceries</a></li>
+        <li><a href="/logout">Logout</a></li>
+
+        {% endif %}
+      </ul>
+    </nav>
+    <!--  ####################### -->
+
+    <header>
+      <div class="container-head">
+        {% block content %} content here {% endblock %}
+      </div>
+    </header>
+
+    <script src="static/app.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  </body>
 </html>

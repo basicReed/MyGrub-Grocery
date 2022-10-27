@@ -1,0 +1,323 @@
+/* #######################*/
+/* Page Set Up*/
+/* #######################*/
+
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* #######################*/
+/* TEMPORARY / DELETE */
+/* #######################*/
+
+.asd {
+  text-align: center;
+}
+
+/* #######################*/
+/* Header/Text Sizing*/
+/* #######################*/
+
+h1 {
+  font-size: 70px;
+  display: inline-block;
+  color: rgb(253, 97, 27);
+}
+
+h2 {
+  font-size: 32px;
+}
+
+#logo-line {
+  display: inline-block;
+  margin: 0 5px 0 5px;
+}
+
+/* #######################*/
+/* Alerts & Flash Messages*/
+/* #######################*/
+
+.alert-success {
+  color: rgb(0, 102, 0);
+}
+
+.alert-danger {
+  color: #b42101;
+}
+
+/* #######################*/
+/* Navigation*/
+/* #######################*/
+
+.btn {
+  position: absolute;
+  top: 15px;
+  left: 45px;
+  height: 45px;
+  width: 45px;
+  text-align: center;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: left 0.4s ease;
+  z-index: 10;
+}
+.btn.click {
+  left: 310px;
+}
+.btn span {
+  color: white;
+  font-size: 28px;
+  line-height: 45px;
+}
+.btn.click span:before {
+  content: "\f00d";
+}
+.sidebar {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  left: -300px;
+  background: #ebebeb;
+  transition: left 0.4s ease;
+  z-index: 10;
+}
+.sidebar.show {
+  left: 0px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.sidebar .text {
+  color: #1e1e1e;
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 65px;
+  text-align: center;
+  background: white;
+  letter-spacing: 1px;
+}
+nav ul {
+  background: #ebebeb;
+  height: 100%;
+  width: 100%;
+  list-style: none;
+}
+nav ul li {
+  line-height: 60px;
+  border-top: 1px solid rgba(132, 132, 132, 0.05);
+}
+nav ul li:last-child {
+  border-bottom: 1px solid rgba(132, 132, 132, 0.05);
+}
+nav ul li a {
+  position: relative;
+  color: #1e1e1e;
+  text-decoration: none;
+  font-size: 18px;
+  padding-left: 40px;
+  font-weight: 500;
+  display: block;
+  width: 100%;
+  border-left: 3px solid transparent;
+}
+nav ul li.active a {
+  color: rgb(253, 97, 27);
+  background: #ebebeb;
+  border-left-color: rgb(253, 97, 27);
+}
+nav ul li a:hover {
+  background: #f4f4f47e;
+  transition: 0.2s;
+}
+nav ul ul {
+  position: static;
+  display: none;
+}
+nav ul .feat-show.show {
+  display: block;
+}
+nav ul .serv-show.show1 {
+  display: block;
+}
+nav ul ul li {
+  line-height: 42px;
+  border-top: none;
+}
+nav ul ul li a {
+  font-size: 17px;
+  color: #e6e6e6;
+  padding-left: 80px;
+}
+nav ul li.active ul li a {
+  color: #e6e6e6;
+  background: #ebebeb;
+  border-left-color: transparent;
+}
+nav ul ul li a:hover {
+  color: rgb(253, 97, 27) !important;
+  background: #1e1e1e !important;
+}
+nav ul li a span {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  font-size: 22px;
+  transition: transform 0.4s;
+}
+nav ul li a span.rotate {
+  transform: translateY(-50%) rotate(-180deg);
+}
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #202020;
+  z-index: -1;
+  text-align: center;
+}
+.content .header {
+  font-size: 45px;
+  font-weight: 600;
+}
+.content p {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.container-head {
+  height: 100vh;
+}
+
+.head-col {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+  height: 100vh;
+  min-height: 800px;
+}
+
+.nav-icon:hover {
+  opacity: 0.8;
+  color: rgb(253, 97, 27);
+  transition: 0.2s;
+}
+
+.form-button:hover {
+  opacity: 0.8;
+}
+
+/* #######################*/
+/* LOGIN and SIGN UP FORMS*/
+/* #######################*/
+
+#login {
+  width: 95%;
+  height: 100vh;
+  text-align: left;
+  position: relative;
+}
+
+#login-img {
+  background-image: url("https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80");
+  background-position: center;
+}
+
+.form-container {
+  position: absolute;
+  width: 80%;
+  min-width: 430px;
+  max-height: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 16px 8px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.icon {
+  font-size: 110px;
+  display: flex;
+  justify-content: right;
+  color: #4286f4;
+}
+
+.form-button {
+  background-color: rgb(253, 97, 27);
+  color: white;
+  padding: 14px 0;
+  margin: 10px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.form-button:hover {
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.formcontainer {
+  text-align: left;
+}
+
+.container {
+  padding: 16px 0;
+  text-align: left;
+}
+
+span.psw {
+  float: right;
+  padding-top: 0;
+  padding-right: 15px;
+}
+
+/* ############################################## */
+/* Change styles for span on extra small screens */
+/* ############################################ */
+
+@media screen and (max-width: 900px) {
+  .column {
+    flex: 100%;
+    height: 100vh;
+    min-height: 800px;
+  }
+
+  .head-col {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .col-img {
+    display: none;
+  }
+
+  .change {
+    height: 200px;
+  }
+
+  .form-container {
+    width: 80%;
+    min-width: 300px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+}
