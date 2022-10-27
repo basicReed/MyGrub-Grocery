@@ -127,9 +127,6 @@ def signup():
 @app.route("/")
 def homepage():
     """Show homepage:
-
-    - anon users: no messages
-    - logged in: 100 most recent messages of followed_users
     """
     print(g.user)
     if g.user:
