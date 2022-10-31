@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% block content %} {% for category, message in
+get_flashed_messages(with_categories=True) %}
+<div class="alert alert-{{ category }}">{{ message }}</div>
+{% endfor %}
+<div class="asd">
+  <h2>Details about => {{recipe.title}}</h2>
+</div>
+<form action="/grocery-list/add" method="POST">
+  <ul>
+    {% for ingredient in recipe.extendedIngredients %}
+    <li data="{{ingredient.id}}">
+      {{ ingredient.name }}
+      <input type="radio" name="{{ ingredient.name }}" id="{{ingredient.id}}" />
+    </li>
+    {% endfor %}
+  </ul>
+  <button>add</button>
+</form>
+{% endblock %}

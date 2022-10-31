@@ -3,10 +3,11 @@ import os
 from flask import Flask, render_template, request, flash, redirect, session, g, abort
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
-
+import requests
+import json
 from forms import UserAddForm, LoginForm
 from models import db, connect_db, User
-from secret_key import SECRET_KEY
+from secret_key import SECRET_KEY, API_KEY
 
 
 CURR_USER_KEY = "curr_user"
@@ -21,6 +22,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', SECRET_KEY)
+app.config['SESSION_COOKIE_SAMESITE'] = None
+
+
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
@@ -145,7 +149,58 @@ def homepage():
     """Show homepage:
     """
     if g.user:
+        
         return render_template('recipes.html')
+
     else:
         form = LoginForm()
         return render_template('login.html', form = form)
+
+
+##############################################################################
+# Recipes Handling
+
+@app.route("/recipes/<int:rec_id>/details")
+def get_recipe_details(rec_id):
+    """Show details of recipe"""
+    if g.user:
+        headers = {
+            'apiKey': API_KEY,
+            }
+        info = f"/recipes/{rec_id}/information"
+    
+        baseURL = 'https://api.spoonacular.com'
+
+        resp =  requests.get(baseURL + info, headers = headers)
+
+        recipe = resp.json()
+
+        return render_template('recipe-details.html', recipe =recipe)
+    
+    else:
+        form = LoginForm()
+        return render_template('login.html', form = form)
+
+
+
+@app.route("/recipes/search/<query>")
+def query_search_recipes(query):
+    """Query recipes with search term and return json response"""
+    print(' QUERY: >>>>>>>>>>>>>>>>>>>>')
+    print(query)
+
+    headers = {
+        'apiKey': API_KEY,
+        'query': query,
+        'number': '4'
+        }
+
+    baseURL = 'https://api.spoonacular.com/recipes/complexSearch'
+
+    resp =  requests.get(baseURL, headers)
+
+    recipes = resp.json()
+    print(' RESP JSON: >>>>>>>>>>>>>>>>>>>>>')
+    print(recipes)
+
+    return recipes
