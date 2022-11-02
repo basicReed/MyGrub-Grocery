@@ -3,24 +3,26 @@ get_flashed_messages(with_categories=True) %}
 <div class="alert alert-{{ category }}">{{ message }}</div>
 {% endfor %}
 <div class="asd">
-  <h2>User {{g.user.username}} Is In!</h2>
-
-  <!-- SEARCH BAR -->
-  <div class="wrap">
-    <form id="search-form">
-      <div class="search">
-        <input
-          id="query"
-          type="text"
-          class="searchTerm"
-          placeholder="What are you looking for?"
-        />
-        <button type="submit" class="searchButton">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
-    </form>
-  </div>
+  <section class="header">
+    <h1>Find Your Favorites</h1>
+    <p>Search for food that fits you!</p>
+    <!-- SEARCH BAR -->
+    <div class="wrap">
+      <form id="search-form">
+        <div class="search">
+          <input
+            id="query"
+            type="text"
+            class="searchTerm"
+            placeholder="What are you looking for?"
+          />
+          <button type="submit" class="searchButton">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
 
   <!-- RECIPE LIST  -->
   <ul id="recipe-list"></ul>

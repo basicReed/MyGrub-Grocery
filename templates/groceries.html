@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content %} {% for category, message in
+get_flashed_messages(with_categories=True) %}
+<div class="alert alert-{{ category }}">{{ message }}</div>
+{% endfor %}
+<div class="asd">
+  <section class="header">
+    <h1>Grocery List</h1>
+    <p>Time to get go shopping {{g.user.username}}!</p>
+  </section>
+
+  <!-- RECIPE LIST  -->
+  <ul id="user-favorites">
+    {% for ing in ingredients%}
+    <li>{{ing}} <button>X</button></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

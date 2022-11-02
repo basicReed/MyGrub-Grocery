@@ -1,9 +1,49 @@
 {% extends 'base.html' %} {% block content %}
 
 <div class="asd">
-  <h2>User {{g.user.username}} Profile</h2>
-</div>
+  <section class="header">
+    <div>
+      <h1>{{g.user.username}} Profile</h1>
+    </div>
+    <div>
+      <p>Customise my kitchen!</p>
+    </div>
+    <div>
+      <button href="" id="edit-button"><p>Edit my info!</p></button>
+    </div>
+  </section>
 
-{% for category, message in get_flashed_messages(with_categories=True) %}
-<div class="alert alert-{{ category }}">{{ message }}</div>
-{% endfor %} {% endblock %}
+  <div class="card-center">
+    <div class="stats">
+      <div class="info">
+        <span class="label">Username</span>
+        <span class="value">{{g.user.username}}</span>
+      </div>
+      <div class="info">
+        <span class="label">Email</span>
+        <span class="value">{{g.user.email}}</span>
+      </div>
+    </div>
+  </div>
+
+    <div class="card-footer">
+      <div class="stats">
+        <div class="stat">
+          <span class="label">Favorites</span>
+          <span class="value">32</span>
+        </div>
+        <div class="stat">
+          <span class="label">Intolerances</span>
+          <span class="value">1</span>
+        </div>
+        <div class="stat">
+          <span class="label">Groceries</span>
+          <span class="value">25</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %} {% endblock %}
+</div>

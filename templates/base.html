@@ -43,9 +43,10 @@
         <li><a href="/signup">Sign Up</a></li>
 
         {% else %}
-        <li class="active"><a href="#">Recipes</a></li>
-        <li><a href="#">Favorites</a></li>
-        <li><a href="#">Groceries</a></li>
+        <li class="active"><a href="/"> Find Recipes</a></li>
+        <li><a href="/user/favorites">Favorites</a></li>
+        <li><a href="/user/groceries">Groceries</a></li>
+        <li id="profile-btn"><a href="/user/{{g.user.id}}">Profile</a></li>
         <li><a href="/logout">Logout</a></li>
 
         {% endif %}

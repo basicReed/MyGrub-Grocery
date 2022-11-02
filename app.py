@@ -140,6 +140,24 @@ def show_user_profile(user_id):
     return render_template('users.html', user=user)
 
 
+# TO DO: Finish favorites page and functionality
+@app.route('/user/favorites')
+def show_user_favorites():
+    if g.user:
+        return render_template('favorites.html')
+
+
+# TO DO: Finish grocery page and functionality
+@app.route('/user/groceries')
+def show_user_groceries():
+    if g.user:
+        return render_template('groceries.html')
+
+
+
+
+
+
 ##############################################################################
 # Homepage and error pages
 # TO DO: Add errors page

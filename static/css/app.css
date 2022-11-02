@@ -23,10 +23,28 @@
 /* Header/Text Sizing*/
 /* #######################*/
 
+.header {
+  width: 100%;
+  padding: 60px 0;
+  text-align: center;
+  color: white;
+  min-height: 100%;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url(https://plus.unsplash.com/premium_photo-1663126351065-741a1d338b5d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80);
+  background-size: cover;
+  margin-bottom: 40px;
+}
+
 h1 {
   font-size: 70px;
   display: inline-block;
   color: rgb(253, 97, 27);
+}
+
+@media screen and (max-width: 750px) {
+  h1 {
+    font-size: 50px;
+  }
 }
 
 h2 {
@@ -60,6 +78,8 @@ a {
 
 #nav-bar-top {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  height: 75px;
+  max-height: 75px;
 }
 
 #nav-top-container {
@@ -73,6 +93,7 @@ a {
   width: 40px;
 }
 
+/* LOGO */
 .nav-logo {
   margin: 0 auto;
   display: inline-block;
@@ -84,6 +105,8 @@ a {
   color: rgb(253, 97, 27);
   font-weight: bold;
 }
+
+/* User Icon */
 
 #nav-user-icon {
   display: block;
@@ -117,7 +140,12 @@ a {
 
 .btn.click {
   left: 310px;
+  width: 35px;
+  height: 35px;
+  background-color: #ebebebed;
+  border-radius: 5px;
 }
+
 .btn span {
   color: white;
   font-size: 28px;
@@ -126,6 +154,11 @@ a {
 .btn.click span:before {
   content: "\f00d";
 }
+
+#profile-btn {
+  display: none;
+}
+
 .sidebar {
   position: fixed;
   width: 300px;
@@ -531,4 +564,119 @@ span.psw {
 .searchButton:hover {
   opacity: 0.8;
   transition: 0.2s;
+}
+
+/* ############################################## */
+/*  User Page */
+/* ############################################ */
+
+#edit-button {
+  background-color: rgb(253, 97, 27);
+  color: rgb(255, 255, 255);
+  padding: 10px 0;
+  margin-top: 22px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 140px;
+}
+
+#edit-button:hover {
+  background-color: rgba(253, 99, 27, 0.769);
+  border: none;
+}
+
+.card-center {
+  width: 100%;
+}
+
+.info {
+  box-sizing: border-box;
+  width: calc(100% / 2);
+  float: left;
+  text-align: center;
+  border-left: 1px solid #ebebeb;
+  margin-bottom: 40px;
+}
+
+.info .label {
+  display: block;
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #95989a;
+}
+
+.info .value {
+  display: block;
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.card-footer {
+  /*position:fixed; /* Full card width/height */
+
+  left: 0;
+  width: 100%;
+  bottom: 20px;
+}
+.stat {
+  box-sizing: border-box;
+  width: calc(100% / 3);
+  float: left;
+  text-align: center;
+  border-left: 1px solid #ebebeb;
+}
+.stat .label {
+  display: block;
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #95989a;
+}
+
+.stat .value {
+  display: block;
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+/* ############################################## */
+/*  Screen Resizing */
+/* ############################################ */
+
+@media screen and (max-width: 750px) {
+  .nav-logo {
+    transform: scale(0.5, 0.5);
+  }
+
+  #nav-user-icon {
+    display: none;
+  }
+
+  #nav-filler {
+    display: none;
+  }
+
+  #profile-btn {
+    display: unset;
+  }
+
+  .btn {
+    left: 15px;
+  }
+
+  .card-center {
+  }
+
+  .info {
+    width: 100%;
+    float: center;
+    text-align: center;
+    border-left: 1px solid #ebebeb;
+  }
 }
