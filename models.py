@@ -34,8 +34,9 @@ class User(db.Model):
     password = db.Column(
         db.Text,
         nullable=False,
-    )
+    )   
 
+    # grocery = db.relationship('Groceries', back_populates = "users")
 
     @classmethod
     def signup(cls, username, email, password):
@@ -75,7 +76,27 @@ class User(db.Model):
 
         return False
 
+class Favorites(db.Model):
+    __tablename__ = 'favorites'
 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="cascade"), primary_key=True)
+    recipe_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(
+        db.Text,
+        nullable=False,
+    )
+    img_url = db.Column(db.Text)
+
+
+class Groceries(db.Model):
+    __tablename__ = 'groceries'
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="cascade"), primary_key=True)
+    ingredient_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(
+        db.Text,
+        nullable=False,
+    )
 
 def connect_db(app):
     """Connect this database to provided Flask app.

@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 import requests
 import json
 from forms import UserAddForm, LoginForm
-from models import db, connect_db, User
+from models import db, connect_db, User, Groceries, Favorites
 from secret_key import SECRET_KEY, API_KEY
 
 
@@ -137,21 +137,30 @@ def show_user_profile(user_id):
 
     user = User.query.get_or_404(user_id)
 
-    return render_template('users.html', user=user)
+    groc_count = (Groceries.query.filter(Groceries.user_id == g.user.id).count())
+    fav_count = (Groceries.query.filter(Groceries.user_id == g.user.id).count())
+
+
+    return render_template('users.html', user=user, groc_count = groc_count, fav_count = fav_count)
 
 
 # TO DO: Finish favorites page and functionality
 @app.route('/user/favorites')
 def show_user_favorites():
     if g.user:
-        return render_template('favorites.html')
+
+        favs = Favorites.query.filter(Favorites.user_id == g.user.id).all()
+        # fav_ids = [fav.recipe_id for fav in favs]
+
+        return render_template('favorites.html', favs = favs)
 
 
 # TO DO: Finish grocery page and functionality
 @app.route('/user/groceries')
 def show_user_groceries():
     if g.user:
-        return render_template('groceries.html')
+        user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
+        return render_template('groceries.html', user_groc = user_groc)
 
 
 
@@ -182,27 +191,28 @@ def homepage():
 def get_recipe_details(rec_id):
     """Show details of recipe"""
     if g.user:
-        headers = {
-            'apiKey': API_KEY,
-            }
-        info = f"/recipes/{rec_id}/information"
-    
-        baseURL = 'https://api.spoonacular.com'
 
-        resp =  requests.get(baseURL + info, headers = headers)
+        baseURL = f'https://api.spoonacular.com/recipes/{rec_id}/information?includeNutrition=false'
+
+        resp =  requests.get(baseURL, {'apiKey': API_KEY})
 
         recipe = resp.json()
 
-        return render_template('recipe-details.html', recipe =recipe)
+        print(recipe)
+
+        user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
+        groc_ids = [groc.ingredient_id for groc in user_groc]
+
+        return render_template('recipe-details.html', recipe =recipe, groc_ids = groc_ids)
     
     else:
         form = LoginForm()
         return render_template('login.html', form = form)
 
 
-
-@app.route("/recipes/search/<query>")
-def query_search_recipes(query):
+@app.route("/recipes/search/<query>/")
+@app.route("/recipes/search/<query>/<intol>")
+def query_search_recipes(query, intol=None):
     """Query recipes with search term and return json response"""
     print(' QUERY: >>>>>>>>>>>>>>>>>>>>')
     print(query)
@@ -210,8 +220,13 @@ def query_search_recipes(query):
     headers = {
         'apiKey': API_KEY,
         'query': query,
-        'number': '4'
+        'number': '4',
         }
+
+    if intol is not None:
+        headers['intolerances'] = intol
+
+    print(headers)
 
     baseURL = 'https://api.spoonacular.com/recipes/complexSearch'
 
@@ -222,3 +237,86 @@ def query_search_recipes(query):
     print(recipes)
 
     return recipes
+
+
+@app.route('/groceries/add/<ings>', methods=["POST"])
+def add_ingredients(ings):
+    # make list
+    ings = list(ings.split(','))
+    print('ings:', ings)
+
+    # get existing ingredients in groceries
+    user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
+    groc_ids = [groc.ingredient_id for groc in user_groc]
+
+    # Filter out existing ingredients
+    new_ing = [ing for ing in ings if int(ing) not in groc_ids]
+
+    # Add new ingredients to db
+    for ing in new_ing:
+        baseURL = f'https://api.spoonacular.com/food/ingredients/{ing}/information?amount=1'
+        resp =  requests.get(baseURL, {'apiKey': API_KEY})
+        ingredient = resp.json()
+        print('ingredients check: ', ingredient)
+        db.session.add(Groceries(user_id = g.user.id, ingredient_id = ing, name = ingredient["name"]))
+
+    db.session.commit()
+
+    return ings
+
+
+
+
+@app.route('/groceries/remove/<int:ing_id>', methods = ['POST'])
+def remove_ingredient(ing_id):
+    del_ing = (Groceries.query.filter(Groceries.user_id == g.user.id, Groceries.ingredient_id == ing_id).one())
+
+    db.session.delete(del_ing)
+    db.session.commit()
+
+    return redirect('/user/groceries')
+    
+@app.route('/groceries/remove/all', methods = ['POST'])
+def remove_all_ingredients():
+    Groceries.query.filter(Groceries.user_id == g.user.id).delete()
+    db.session.commit()
+
+    return "successfully deleted"
+
+# Favorites
+
+@app.route('/messages/<int:rec_id>/favorite', methods=['POST'])
+def add_favorite(rec_id):
+    """Toggle a favorite recipe for the currently-logged-in user."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    favs = Favorites.query.filter(Favorites.user_id == g.user.id).all()
+    fav_ids = [fav.recipe_id for fav in favs]
+
+    if rec_id not in fav_ids:
+        #Call to save for Fav card
+        baseURL = f'https://api.spoonacular.com/recipes/{rec_id}/information?includeNutrition=false'
+        resp =  requests.get(baseURL, {'apiKey': API_KEY})
+        recipe = resp.json()
+        # Save info to db
+        new_fav = Favorites(user_id = g.user.id, recipe_id = rec_id, name = recipe['title'], img_url = recipe['image'])
+        print(' new fav >>>>>>>>>>>>>>>>>>>>>', new_fav)
+        db.session.add(new_fav)
+
+    else:
+        print('else statement >>>>>>>>>>>>>>>>>>>')
+        del_fav = Favorites.query.filter(Favorites.user_id == g.user.id, Favorites.recipe_id == rec_id).one()
+        db.session.delete(del_fav)
+
+    db.session.commit()
+
+    return 'sucess'
+
+
+
+
+
+

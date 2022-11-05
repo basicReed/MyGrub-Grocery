@@ -2,17 +2,73 @@
 get_flashed_messages(with_categories=True) %}
 <div class="alert alert-{{ category }}">{{ message }}</div>
 {% endfor %}
-<div class="asd">
+<div class="center">
   <section class="header">
     <h1>Grocery List</h1>
     <p>Time to get go shopping {{g.user.username}}!</p>
   </section>
 
-  <!-- RECIPE LIST  -->
-  <ul id="user-favorites">
-    {% for ing in ingredients%}
-    <li>{{ing}} <button>X</button></li>
-    {% endfor %}
-  </ul>
+  <div id="user-groceries">
+    <div class="CartContainer">
+      <div class="Header">
+        <h3 class="Heading">List Items</h3>
+        <h5 class="Remove-all">Remove all</h5>
+      </div>
+
+      <!-- Grocery LIST  -->
+      {% for ing in user_groc %}
+      <ul id="grocery-list">
+        <li class="Ingredient">
+          <div class="icon-box">
+            <svg
+              width="25px"
+              height="25px"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+              />
+            </svg>
+          </div>
+          <div class="about">
+            <h1 class="title">{{ ing.name }}</h1>
+          </div>
+          <!-- for amount feature: -->
+          <!-- <div class="counter">
+            <div class="btn-count">+</div>
+            <div class="count">2</div>
+            <div class="btn-count">-</div>
+            </div> -->
+          <div class="remove-container">
+            <button
+              type="submit"
+              class="remove"
+              value="{{ ing.ingredient_id }}"
+            >
+              <u>Remove</u>
+            </button>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <!-- Overlay: Confirm Delete All -->
+  <div class="confirm-wrap hidden">
+    <div class="confirm-del">
+      <h4>Are you sure you want to delete all groceries?</h4>
+      <div>
+        <button class="delete">Delete</button
+        ><button class="cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

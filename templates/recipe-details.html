@@ -2,18 +2,39 @@
 get_flashed_messages(with_categories=True) %}
 <div class="alert alert-{{ category }}">{{ message }}</div>
 {% endfor %}
-<div class="asd">
-  <h2>Details about => {{recipe.title}}</h2>
+
+<div class="recipe-wrapper">
+  <div class="box1" style="background-image: url({{ recipe.image }})"></div>
+  <div class="box2">
+    <h2>{{recipe.title}}:</h2>
+    <p>{{recipe.instructions | safe}}</p>
+  </div>
+  <div class="box3">
+    <h2>Ingredients:</h2>
+    <p class="ing-added hidden">Groceries added</p>
+    <form id="add-groc-form" action="/grocery-list/add" method="POST">
+      <ul class="ks-cboxtags">
+        {% for ingredient in recipe.extendedIngredients %}
+        <li>
+          <input
+            type="checkbox"
+            id="{{ingredient.id}}"
+            value="{{ingredient.id}}"
+            {%
+            if
+            ingredient.id
+            in
+            groc_ids%}
+            checked
+            {%
+            endif%}
+          /><label for="{{ingredient.id}}">{{ ingredient.name }}</label>
+        </li>
+        {% endfor %}
+      </ul>
+      <button class="form-button-add" type="submit">Add To Groceries</button>
+    </form>
+  </div>
+
+  {% endblock %}
 </div>
-<form action="/grocery-list/add" method="POST">
-  <ul>
-    {% for ingredient in recipe.extendedIngredients %}
-    <li data="{{ingredient.id}}">
-      {{ ingredient.name }}
-      <input type="radio" name="{{ ingredient.name }}" id="{{ingredient.id}}" />
-    </li>
-    {% endfor %}
-  </ul>
-  <button>add</button>
-</form>
-{% endblock %}

@@ -2,29 +2,134 @@
 get_flashed_messages(with_categories=True) %}
 <div class="alert alert-{{ category }}">{{ message }}</div>
 {% endfor %}
-<div class="asd">
+<div class="center">
   <section class="header">
     <h1>Find Your Favorites</h1>
-    <p>Search for food that fits you!</p>
+    <p>Filter out items to find food that fits you!</p>
     <!-- SEARCH BAR -->
     <div class="wrap">
       <form id="search-form">
         <div class="search">
-          <input
-            id="query"
-            type="text"
-            class="searchTerm"
-            placeholder="What are you looking for?"
-          />
-          <button type="submit" class="searchButton">
-            <i class="fa fa-search"></i>
-          </button>
+          <div id="search-bar">
+            <input
+              id="query"
+              type="text"
+              class="searchTerm"
+              placeholder="What are you looking for?"
+            />
+            <button type="submit" class="searchButton">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+
+          <ul class="ks-cboxtags" id="intolerance-list">
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Dairy"
+                value="Dairy"
+              /><label for="Dairy">Dairy</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Egg"
+                value="Egg"
+              /><label for="Egg">Egg</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Gluten"
+                value="Gluten"
+              /><label for="Gluten">Gluten</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Grain"
+                value="Grain"
+              /><label for="Grain">Grain</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Peanut"
+                value="Peanut"
+              /><label for="Peanut">Peanut</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Seafood"
+                value="Seafood"
+              /><label for="Seafood">Seafood</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Sesame"
+                value="Sesame"
+              /><label for="Sesame">Sesame</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Shellfish"
+                value="Shellfish"
+              /><label for="Shellfish">Shellfish</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Soy"
+                value="Soy"
+              /><label for="Soy">Soy</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Sulfite"
+                value="Sulfite"
+              /><label for="Sulfite">Sulfite</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Tree Nut"
+                value="Tree Nut"
+              /><label for="Tree Nut">Tree Nut</label>
+            </li>
+            <li>
+              <input
+                class="intolerances"
+                type="checkbox"
+                id="Wheat"
+                value="Wheat"
+              /><label for="Wheat">Wheat</label>
+            </li>
+          </ul>
         </div>
       </form>
     </div>
   </section>
 
   <!-- RECIPE LIST  -->
-  <ul id="recipe-list"></ul>
+  <ul id="recipe-list">
+    <h3 id="results-none" class="hidden">
+      No results found... try removing some intolerances
+    </h3>
+  </ul>
 </div>
 {% endblock %}
