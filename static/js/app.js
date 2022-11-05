@@ -89,16 +89,8 @@ $("body").on("click", ".favorite", async (e) => {
   console.log("clicked");
   console.log("button value: ", btn.value);
   btn.classList.toggle("js-is-selected");
-  await axios.post(`/messages/${btn.value}/favorite`);
+  await axios.post(`/recipes/${btn.value}/favorite`);
 });
-
-// Rodio Field Uncheck
-// $("input[type=radio]").click(function () {
-//   if (this.previous) {
-//     this.checked = false;
-//   }
-//   this.previous = this.checked;
-// });
 
 ////////////////////////
 // Grocery List Func/////

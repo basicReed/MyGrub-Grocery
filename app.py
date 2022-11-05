@@ -34,6 +34,8 @@ db.create_all()
 
 ##############################################################################
 # User signup/login/logout
+##############################################################################
+
 
 @app.before_request
 def add_user_to_g():
@@ -124,9 +126,8 @@ def signup():
 
 ##############################################################################
 # User Pages
+##############################################################################
 
-
-#ERROR 404 for js file???
 
 @app.route('/user/<int:user_id>')
 def show_user_profile(user_id):
@@ -144,76 +145,70 @@ def show_user_profile(user_id):
     return render_template('users.html', user=user, groc_count = groc_count, fav_count = fav_count)
 
 
-# TO DO: Finish favorites page and functionality
+
 @app.route('/user/favorites')
 def show_user_favorites():
-    if g.user:
 
-        favs = Favorites.query.filter(Favorites.user_id == g.user.id).all()
-        # fav_ids = [fav.recipe_id for fav in favs]
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
 
-        return render_template('favorites.html', favs = favs)
+    favs = Favorites.query.filter(Favorites.user_id == g.user.id).all()
+
+    return render_template('favorites.html', favs = favs)
 
 
-# TO DO: Finish grocery page and functionality
+
 @app.route('/user/groceries')
 def show_user_groceries():
-    if g.user:
-        user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
-        return render_template('groceries.html', user_groc = user_groc)
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
+    return render_template('groceries.html', user_groc = user_groc)
 
 
-
-
-
-
-##############################################################################
-# Homepage and error pages
-# TO DO: Add errors page
-
-@app.route("/")
-def homepage():
-    """Show homepage:
-    """
-    if g.user:
-        
-        return render_template('recipes.html')
-
-    else:
-        form = LoginForm()
-        return render_template('login.html', form = form)
 
 
 ##############################################################################
 # Recipes Handling
+##############################################################################
+
 
 @app.route("/recipes/<int:rec_id>/details")
 def get_recipe_details(rec_id):
     """Show details of recipe"""
-    if g.user:
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
 
-        baseURL = f'https://api.spoonacular.com/recipes/{rec_id}/information?includeNutrition=false'
+    baseURL = f'https://api.spoonacular.com/recipes/{rec_id}/information?includeNutrition=false'
 
-        resp =  requests.get(baseURL, {'apiKey': API_KEY})
+    resp =  requests.get(baseURL, {'apiKey': API_KEY})
 
-        recipe = resp.json()
+    recipe = resp.json()
 
-        print(recipe)
+    print(recipe)
 
-        user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
-        groc_ids = [groc.ingredient_id for groc in user_groc]
+    user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
+    groc_ids = [groc.ingredient_id for groc in user_groc]
 
-        return render_template('recipe-details.html', recipe =recipe, groc_ids = groc_ids)
+    return render_template('recipe-details.html', recipe =recipe, groc_ids = groc_ids)
     
-    else:
-        form = LoginForm()
-        return render_template('login.html', form = form)
+    
 
 
 @app.route("/recipes/search/<query>/")
 @app.route("/recipes/search/<query>/<intol>")
 def query_search_recipes(query, intol=None):
     """Query recipes with search term and return json response"""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
     print(' QUERY: >>>>>>>>>>>>>>>>>>>>')
     print(query)
 
@@ -239,53 +234,8 @@ def query_search_recipes(query, intol=None):
     return recipes
 
 
-@app.route('/groceries/add/<ings>', methods=["POST"])
-def add_ingredients(ings):
-    # make list
-    ings = list(ings.split(','))
-    print('ings:', ings)
 
-    # get existing ingredients in groceries
-    user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
-    groc_ids = [groc.ingredient_id for groc in user_groc]
-
-    # Filter out existing ingredients
-    new_ing = [ing for ing in ings if int(ing) not in groc_ids]
-
-    # Add new ingredients to db
-    for ing in new_ing:
-        baseURL = f'https://api.spoonacular.com/food/ingredients/{ing}/information?amount=1'
-        resp =  requests.get(baseURL, {'apiKey': API_KEY})
-        ingredient = resp.json()
-        print('ingredients check: ', ingredient)
-        db.session.add(Groceries(user_id = g.user.id, ingredient_id = ing, name = ingredient["name"]))
-
-    db.session.commit()
-
-    return ings
-
-
-
-
-@app.route('/groceries/remove/<int:ing_id>', methods = ['POST'])
-def remove_ingredient(ing_id):
-    del_ing = (Groceries.query.filter(Groceries.user_id == g.user.id, Groceries.ingredient_id == ing_id).one())
-
-    db.session.delete(del_ing)
-    db.session.commit()
-
-    return redirect('/user/groceries')
-    
-@app.route('/groceries/remove/all', methods = ['POST'])
-def remove_all_ingredients():
-    Groceries.query.filter(Groceries.user_id == g.user.id).delete()
-    db.session.commit()
-
-    return "successfully deleted"
-
-# Favorites
-
-@app.route('/messages/<int:rec_id>/favorite', methods=['POST'])
+@app.route('/recipes/<int:rec_id>/favorite', methods=['POST'])
 def add_favorite(rec_id):
     """Toggle a favorite recipe for the currently-logged-in user."""
 
@@ -316,7 +266,86 @@ def add_favorite(rec_id):
     return 'sucess'
 
 
+##############################################################################
+# Groceries Handling
+##############################################################################
+
+
+@app.route('/groceries/add/<ings>', methods=["POST"])
+def add_ingredients(ings):
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    # make list
+    ings = list(ings.split(','))
+    print('ings:', ings)
+
+    # get existing ingredients in groceries
+    user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
+    groc_ids = [groc.ingredient_id for groc in user_groc]
+
+    # Filter out existing ingredients
+    new_ing = [ing for ing in ings if int(ing) not in groc_ids]
+
+    # Add new ingredients to db
+    for ing in new_ing:
+        baseURL = f'https://api.spoonacular.com/food/ingredients/{ing}/information?amount=1'
+        resp =  requests.get(baseURL, {'apiKey': API_KEY})
+        ingredient = resp.json()
+        print('ingredients check: ', ingredient)
+        db.session.add(Groceries(user_id = g.user.id, ingredient_id = ing, name = ingredient["name"]))
+
+    db.session.commit()
+
+    return ings
+
+
+@app.route('/groceries/remove/<int:ing_id>', methods = ['POST'])
+def remove_ingredient(ing_id):
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    del_ing = (Groceries.query.filter(Groceries.user_id == g.user.id, Groceries.ingredient_id == ing_id).one())
+
+    db.session.delete(del_ing)
+    db.session.commit()
+
+    return redirect('/user/groceries')
+
+
+    
+@app.route('/groceries/remove/all', methods = ['POST'])
+def remove_all_ingredients():
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    Groceries.query.filter(Groceries.user_id == g.user.id).delete()
+    db.session.commit()
+
+    return "successfully deleted"
 
 
 
+##############################################################################
+# Homepage and error pages
+##############################################################################
 
+# TO DO: Add errors page
+
+@app.route("/")
+def homepage():
+    """Show homepage:
+    """
+    if g.user:
+        
+        return render_template('recipes.html')
+
+    else:
+        form = LoginForm()
+        return render_template('login.html', form = form)
