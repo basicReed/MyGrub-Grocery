@@ -4,7 +4,7 @@ get_flashed_messages(with_categories=True) %}
 {% endfor %}
 
 <div class="recipe-wrapper">
-  <div class="box1" style="background-image: url({{ recipe.image }})"></div>
+  <div class="box1" style="background-image: url({{recipe.image}})"></div>
   <div class="box2">
     <h2>{{recipe.title}}:</h2>
     <p>{{recipe.instructions | safe}}</p>

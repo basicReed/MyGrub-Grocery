@@ -9,6 +9,30 @@ bcrypt = Bcrypt()
 db = SQLAlchemy()
 
 
+class Favorites(db.Model):
+    __tablename__ = 'favorites'
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="cascade"), primary_key=True)
+    recipe_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(
+        db.Text,
+        nullable=False,
+    )
+    img_url = db.Column(db.Text)
+
+
+class Groceries(db.Model):
+    __tablename__ = 'groceries'
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="cascade"), primary_key=True)
+    ingredient_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(
+        db.Text,
+        nullable=False,
+    )
+
+
+
 class User(db.Model):
     """User in the system."""
 
@@ -35,6 +59,21 @@ class User(db.Model):
         db.Text,
         nullable=False,
     )   
+
+    groceries = db.relationship(
+        "User",
+        secondary="groceries",
+        primaryjoin=(Groceries.user_id == id)
+        # secondaryjoin=(Follows.user_following_id == id)
+    ) 
+
+    favorites = db.relationship(
+        "User",
+        secondary="favorites",
+        primaryjoin=(Favorites.user_id == id)
+        # secondaryjoin=(Favorites.user_being_followed_id == id)
+    ) 
+
 
     # grocery = db.relationship('Groceries', back_populates = "users")
 
@@ -76,27 +115,6 @@ class User(db.Model):
 
         return False
 
-class Favorites(db.Model):
-    __tablename__ = 'favorites'
-
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="cascade"), primary_key=True)
-    recipe_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(
-        db.Text,
-        nullable=False,
-    )
-    img_url = db.Column(db.Text)
-
-
-class Groceries(db.Model):
-    __tablename__ = 'groceries'
-
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="cascade"), primary_key=True)
-    ingredient_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(
-        db.Text,
-        nullable=False,
-    )
 
 def connect_db(app):
     """Connect this database to provided Flask app.
