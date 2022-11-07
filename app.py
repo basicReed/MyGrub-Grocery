@@ -132,7 +132,7 @@ def signup():
 @app.route('/user/<int:user_id>')
 def show_user_profile(user_id):
 
-    if not g.user:
+    if not g.user or g.user.id != user_id:
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
