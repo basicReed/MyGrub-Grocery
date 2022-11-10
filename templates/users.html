@@ -1,5 +1,9 @@
-{% extends 'base.html' %} {% block content %}
-
+{% extends 'base.html' %} 
+{% set active_page = "profile" %}
+{% block content %}
+{% for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %}
 <div class="center">
   <section class="header">
     <div>
@@ -9,7 +13,7 @@
       <p>Customise my kitchen!</p>
     </div>
     <div>
-      <button href="" id="edit-button"><p>Edit my info!</p></button>
+        <a href="/user/edit" type="button" id="edit-button"><p>Edit my info!</p></a>
     </div>
   </section>
 
@@ -43,7 +47,5 @@
       </div>
     </div>
   </div>
-  {% for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{ category }}">{{ message }}</div>
-  {% endfor %} {% endblock %}
+ {% endblock %}
 </div>

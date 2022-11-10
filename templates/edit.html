@@ -1,0 +1,57 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+
+<div class="head-col">
+  <div class="column" id="login">
+    <div class="form-container">
+      <form action="/user/edit" method="POST">
+        {{ form.hidden_tag() }}
+
+        <h2>Edit your info!</h2>
+        {% for category, message in get_flashed_messages(with_categories=True)
+        %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        <div class="formcontainer">
+          <div class="container">
+            <!-- Form Fields -->
+            {% for field in form if field.widget.input_type != 'hidden' %}
+                {%for error in field.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            {% endfor %}
+            {%for error in form.password.errors %}
+            <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            <label for="{{ form.username.label.text }}"
+            ><strong>{{ form.username.label.text }}</strong></label
+            >
+            {{form.username(placeholder= 'Enter Username', value=user.username, class="form-control")}}
+            <label for="{{ form.email.label.text }}"
+            ><strong>{{ form.email.label.text }}</strong></label
+            >
+            {{form.email(placeholder= 'Enter E-mail', value=user.email, class="form-control")}}
+            <label for="{{ form.password.label.text }}"
+            ><strong>{{ form.password.label.text }}</strong></label
+            >
+            {{form.password(placeholder= 'Enter Password', class="form-control")}}
+            {%for error in form.password.errors %}
+            <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        <button class="form-button" type="submit">
+          <strong>UPDATE INFO</strong>
+        </button>
+        <p>
+          Change your mind? <a href="/user/{{user.id}}"><strong>Go back</strong></a>
+        </p>
+      </form>
+    </div>
+  </div class="change">
+  <div class="column col-img" id="login-img"></div>
+</div>
+
+{% endblock %}

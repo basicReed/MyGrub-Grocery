@@ -5,7 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 import requests
 import json
-from forms import UserAddForm, LoginForm
+from forms import UserAddForm, LoginForm, EditUserForm
 from models import db, connect_db, User, Groceries, Favorites
 from secret_key import SECRET_KEY, API_KEY
 
@@ -141,9 +141,37 @@ def show_user_profile(user_id):
     groc_count = (Groceries.query.filter(Groceries.user_id == g.user.id).count())
     fav_count = (Groceries.query.filter(Groceries.user_id == g.user.id).count())
 
-
     return render_template('users.html', user=user, groc_count = groc_count, fav_count = fav_count)
 
+
+
+@app.route('/user/edit', methods=["GET", "POST"])
+def edit_user_info():
+    user = g.user
+
+    if not g.user or g.user.id != user.id:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    form = EditUserForm(obj=user)
+
+    # POST
+    if form.validate_on_submit():
+        # authenticate user data change
+        if User.authenticate(user.username, form.password.data):
+            user.username = form.username.data
+            user.email = form.email.data
+            db.session.commit()
+            return redirect(f'/user/{user.id}'), flash("Profile successfully updated.", 'success')
+        else:
+            flash("Access unauthorized/Password incorrect.", "danger")
+            return redirect(f"/user/{user.id}")
+
+    # GET
+    else:
+        user = User.query.get_or_404(g.user.id)
+        form = EditUserForm()
+        return render_template('edit.html', form = form, user = user)
 
 
 @app.route('/user/favorites')
@@ -190,8 +218,6 @@ def get_recipe_details(rec_id):
 
     recipe = resp.json()
 
-    print(recipe)
-
     user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
     groc_ids = [groc.ingredient_id for groc in user_groc]
 
@@ -209,28 +235,20 @@ def query_search_recipes(query, intol=None):
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    print(' QUERY: >>>>>>>>>>>>>>>>>>>>')
-    print(query)
-
     headers = {
         'apiKey': API_KEY,
         'query': query,
-        'number': '4',
+        'number': '12',
         }
 
     if intol is not None:
         headers['intolerances'] = intol
-
-    print(headers)
 
     baseURL = 'https://api.spoonacular.com/recipes/complexSearch'
 
     resp =  requests.get(baseURL, headers)
 
     recipes = resp.json()
-    print(' RESP JSON: >>>>>>>>>>>>>>>>>>>>>')
-    print(recipes)
-
     return recipes
 
 
@@ -253,11 +271,9 @@ def add_favorite(rec_id):
         recipe = resp.json()
         # Save info to db
         new_fav = Favorites(user_id = g.user.id, recipe_id = rec_id, name = recipe['title'], img_url = recipe['image'])
-        print(' new fav >>>>>>>>>>>>>>>>>>>>>', new_fav)
         db.session.add(new_fav)
 
     else:
-        print('else statement >>>>>>>>>>>>>>>>>>>')
         del_fav = Favorites.query.filter(Favorites.user_id == g.user.id, Favorites.recipe_id == rec_id).one()
         db.session.delete(del_fav)
 
@@ -280,7 +296,6 @@ def add_ingredients(ings):
 
     # make list
     ings = list(ings.split(','))
-    print('ings:', ings)
 
     # get existing ingredients in groceries
     user_groc = (Groceries.query.filter(Groceries.user_id == g.user.id).all())
@@ -294,7 +309,6 @@ def add_ingredients(ings):
         baseURL = f'https://api.spoonacular.com/food/ingredients/{ing}/information?amount=1'
         resp =  requests.get(baseURL, {'apiKey': API_KEY})
         ingredient = resp.json()
-        print('ingredients check: ', ingredient)
         db.session.add(Groceries(user_id = g.user.id, ingredient_id = ing, name = ingredient["name"]))
 
     db.session.commit()
@@ -343,8 +357,14 @@ def homepage():
     """Show homepage:
     """
     if g.user:
-        
-        return render_template('recipes.html')
+
+        baseURL = 'https://api.spoonacular.com/recipes/random?number=12'
+
+        resp =  requests.get(baseURL, {'apiKey': API_KEY})
+
+        random = resp.json()
+        print('resp:', random)
+        return render_template('recipes.html', random = random['recipes'])
 
     else:
         form = LoginForm()

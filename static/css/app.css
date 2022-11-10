@@ -559,6 +559,9 @@ span.psw {
   cursor: pointer;
   border-radius: 5px;
   width: 140px;
+  display: inherit;
+  margin: 20px auto;
+  text-decoration: none;
 }
 
 #edit-button:hover {
@@ -1011,6 +1014,19 @@ hr {
     float: center;
     text-align: center;
     border-left: 1px solid #ebebeb;
+  }
+
+  .CartContainer {
+    width: 95%;
+  }
+
+  .card {
+    width: 350px;
+    height: 350px;
+  }
+
+  .wrap {
+    width: 80%;
   }
 }
 

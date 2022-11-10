@@ -1,5 +1,5 @@
-{% extends 'base.html' %} {% block content %} {% for category, message in
-get_flashed_messages(with_categories=True) %}
+{% extends 'base.html' %} {% set active_page = "groceries" %} {% block content
+%} {% for category, message in get_flashed_messages(with_categories=True) %}
 <div class="alert alert-{{ category }}">{{ message }}</div>
 {% endfor %}
 <div class="center">

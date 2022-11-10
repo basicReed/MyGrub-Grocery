@@ -3,10 +3,10 @@
 /////////////////////////
 // Side Bar Navigation//
 ///////////////////////
+
 $(".btn").click(function () {
   $(this).toggleClass("click");
   $(".sidebar").toggleClass("show");
-  console.log("Ive been clicked");
 });
 
 $(".feat-btn").click(function () {
@@ -36,7 +36,6 @@ $("#search-form").submit(async (e) => {
   const values = Array.from(checkedRadios, (radio) =>
     radio.value.toLowerCase()
   );
-  console.log(values);
   await requestRcps(query, values);
 });
 
@@ -84,10 +83,9 @@ function generateRecipeListHTML(rec) {
 // Handles Favorites Button on Card
 $("body").on("click", ".favorite", async (e) => {
   e.preventDefault();
+  // Can click inside clickable element
   e.stopPropagation();
   btn = e.target.closest("button");
-  console.log("clicked");
-  console.log("button value: ", btn.value);
   btn.classList.toggle("js-is-selected");
   await axios.post(`/recipes/${btn.value}/favorite`);
 });
@@ -99,11 +97,8 @@ $("body").on("click", ".favorite", async (e) => {
 // Recipe Details Page Add Form
 $("#add-groc-form").submit(async (e) => {
   e.preventDefault();
-
   const checked = document.querySelectorAll('input[type="checkbox"]:checked');
-  console.log("checked:", checked);
   const values = Array.from(checked, (check) => check.value);
-  console.log("values:", values);
   await axios.post(`/groceries/add/${values}`);
   flash = $(".ing-added");
   flash.removeClass("hidden");
@@ -121,7 +116,6 @@ $(".remove").click(async (e) => {
 
 // Grocery Page Remove ALL Button
 $(".Remove-all").click(function () {
-  console.log("Removed All");
   wrap = $(".confirm-wrap");
   wrap.removeClass("hidden");
 });
@@ -132,7 +126,6 @@ $(".Remove-all").click(function () {
 
 // Cancel Delete All Groceries
 $(".cancel").click(function () {
-  console.log("cancel");
   wrap = $(".confirm-wrap");
   wrap.addClass("hidden");
 });
