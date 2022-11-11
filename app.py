@@ -131,7 +131,7 @@ def signup():
 
 @app.route('/user/<int:user_id>')
 def show_user_profile(user_id):
-
+    """Get and display user page if logged in"""
     if not g.user or g.user.id != user_id:
         flash("Access unauthorized.", "danger")
         return redirect("/")
@@ -147,6 +147,7 @@ def show_user_profile(user_id):
 
 @app.route('/user/edit', methods=["GET", "POST"])
 def edit_user_info():
+    """Edit user data or get edit page"""
     user = g.user
 
     if not g.user or g.user.id != user.id:
@@ -176,7 +177,7 @@ def edit_user_info():
 
 @app.route('/user/favorites')
 def show_user_favorites():
-
+    """Get and display user favorites page"""
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
@@ -189,6 +190,7 @@ def show_user_favorites():
 
 @app.route('/user/groceries')
 def show_user_groceries():
+    """Get and display user groceries page"""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
@@ -207,7 +209,7 @@ def show_user_groceries():
 
 @app.route("/recipes/<int:rec_id>/details")
 def get_recipe_details(rec_id):
-    """Show details of recipe"""
+    """Get and display details of recipe"""
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
@@ -289,7 +291,7 @@ def add_favorite(rec_id):
 
 @app.route('/groceries/add/<ings>', methods=["POST"])
 def add_ingredients(ings):
-
+    """Adds ingredients to grocery list if not already in list"""
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
@@ -313,11 +315,12 @@ def add_ingredients(ings):
 
     db.session.commit()
 
-    return ings
+    return "successfully added"
 
 
 @app.route('/groceries/remove/<int:ing_id>', methods = ['POST'])
 def remove_ingredient(ing_id):
+    """Removes ingredient by id from grocery list"""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
@@ -334,7 +337,7 @@ def remove_ingredient(ing_id):
     
 @app.route('/groceries/remove/all', methods = ['POST'])
 def remove_all_ingredients():
-
+    """Removes all ingredient from grocery list"""
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
@@ -354,8 +357,7 @@ def remove_all_ingredients():
 
 @app.route("/")
 def homepage():
-    """Show homepage:
-    """
+    """Show homepage: Render Home Page if logged in ELSE render Login Page"""
     if g.user:
 
         baseURL = 'https://api.spoonacular.com/recipes/random?number=12'
