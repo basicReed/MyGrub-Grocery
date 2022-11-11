@@ -7,7 +7,7 @@ import requests
 import json
 from forms import UserAddForm, LoginForm, EditUserForm
 from models import db, connect_db, User, Groceries, Favorites
-from secret_key import SECRET_KEY, API_KEY
+# from secret_key import SECRET_KEY, API_KEY
 
 
 CURR_USER_KEY = "curr_user"
@@ -21,7 +21,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', SECRET_KEY)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'hello-secret')
 app.config['SESSION_COOKIE_SAMESITE'] = None
 
 
