@@ -15,7 +15,7 @@ CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 
-uri = os.getenv("HEROKU_DATABASE_URL")  # or other relevant config var
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
