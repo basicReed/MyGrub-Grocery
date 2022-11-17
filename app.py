@@ -19,8 +19,8 @@ heroku_url = 'postgres://qmmlogktjnxnod:77509c9a1a36afb23fead0c03bf0094f85062562
 
 uri = heroku_url
 # os.getenv("DATABASE_URL") 
-# if uri and uri.startswith("postgres://"):
-#     uri = uri.replace("postgres://", "postgresql://", 1)
+if uri and uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 # (os.environ.get(uri, 'postgresql:///mygrub'))
