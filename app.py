@@ -23,14 +23,14 @@ if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get(uri, 'postgresql:///mygrub'))
-print('CORRECTED>>>>>>>>>>>>>>>>>>>>>>', SQLALCHEMY_DATABASE_URI)
+print('CORRECTED>>>>>>>>>>>>>>>>>>>>>>', session['SQLALCHEMY_DATABASE_URI'])
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = 'oh-so-secret'
 # os.environ.get('SECRET_KEY', 'hello-secret')
-print('CORRECTED>>>>>>>>>>>>>>>>>>>>>>', SECRET_KEY)
+print('CORRECTED>>>>>>>>>>>>>>>>>>>>>>', session[SECRET_KEY])
 
 app.config['SESSION_COOKIE_SAMESITE'] = None
 
