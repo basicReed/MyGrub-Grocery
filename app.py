@@ -17,19 +17,21 @@ app = Flask(__name__)
 
 heroku_url = 'postgres://qmmlogktjnxnod:77509c9a1a36afb23fead0c03bf0094f8506256210ea21343d6eff7e995791ae@ec2-52-1-17-228.compute-1.amazonaws.com:5432/ddchernj4db8p0'
 
-uri = heroku_url
-# os.getenv("DATABASE_URL") 
+ uri = os.getenv("DATABASE_URL") 
+print("URI>>>>>>>>>>>>>>>>>>>>>>>>>>>>", uri)
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
-# (os.environ.get(uri, 'postgresql:///mygrub'))
+app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get(uri, 'postgresql:///mygrub'))
+print('CORRECTED>>>>>>>>>>>>>>>>>>>>>>', session[SQLALCHEMY_DATABASE_URI])
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = 'oh-so-secret'
 # os.environ.get('SECRET_KEY', 'hello-secret')
+print('CORRECTED>>>>>>>>>>>>>>>>>>>>>>', session[SECRET_KEY])
+
 app.config['SESSION_COOKIE_SAMESITE'] = None
 
 
@@ -37,7 +39,7 @@ toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
-db.drop_all()
+# db.drop_all()
 db.create_all()
 
 ##############################################################################
