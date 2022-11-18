@@ -21,7 +21,8 @@ uri = os.environ.get('DATABASE_URL')
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get(uri, 'postgresql:///mygrub'))
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
+# (os.environ.get(uri, 'postgresql:///mygrub'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
