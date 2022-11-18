@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 heroku_url = 'postgres://qmmlogktjnxnod:77509c9a1a36afb23fead0c03bf0094f8506256210ea21343d6eff7e995791ae@ec2-52-1-17-228.compute-1.amazonaws.com:5432/ddchernj4db8p0'
 
-uri = os.environ.get('HEROKU_POSTGRESQL_AQUA_URL') 
+uri = os.environ.get('DATABASE_URL') 
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
