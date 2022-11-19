@@ -8,11 +8,11 @@ import requests
 import json
 from forms import UserAddForm, LoginForm, EditUserForm
 from models import db, connect_db, User, Groceries, Favorites
-# from secret_key import SECRET_KEY, API_KEY
+from secret_key import SECRET_KEY, API_KEY_LOCAL
 
 
 CURR_USER_KEY = "curr_user"
-API_KEY = os.environ.get('API_KEY')
+API_KEY = os.environ.get('API_KEY', API_KEY1)
 
 app = Flask(__name__)
 
@@ -21,13 +21,13 @@ uri = os.environ.get('DATABASE_URL')
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
-# (os.environ.get('postgresql:///mygrub'))
+app.config['SQLALCHEMY_DATABASE_URI'] = uri or 'postgresql:///mygrub'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'hello-secret')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', SECRET_KEY)
+
 app.config['SESSION_COOKIE_SAMESITE'] = None
 
 
@@ -35,8 +35,8 @@ toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
-# db.drop_all()
-# db.create_all()
+db.drop_all()
+db.create_all()
 
 ##############################################################################
 # User signup/login/logout
@@ -144,8 +144,9 @@ def show_user_profile(user_id):
 
     user = User.query.get_or_404(user_id)
 
-    groc_count = (Groceries.query.filter(Groceries.user_id == g.user.id).count())
-    fav_count = (Groceries.query.filter(Groceries.user_id == g.user.id).count())
+    groc_count = (Groceries.query.filter(Groceries.user_id == g.user.id)).count()
+    fav_count = (Groceries.query.filter(Groceries.user_id == g.user.id)).count()
+
 
     return render_template('users.html', user=user, groc_count = groc_count, fav_count = fav_count)
 
@@ -265,12 +266,16 @@ def query_search_recipes(query, intol=None):
 def add_favorite(rec_id):
     """Toggle a favorite recipe for the currently-logged-in user."""
 
+    print('REC_ID>>>>>>>>>>>>>>>>>>:', rec_id)
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
     favs = Favorites.query.filter(Favorites.user_id == g.user.id).all()
     fav_ids = [fav.recipe_id for fav in favs]
+
+    print('FAV_ID>>>>>>>>>>>>>>>>>>:', fav_ids)
+
 
     if rec_id not in fav_ids:
         #Call to save for Fav card
