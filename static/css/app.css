@@ -530,7 +530,7 @@ span.psw {
 .searchButton {
   width: 40px;
   height: 36px;
-  border: 1px solid rgb(253, 97, 27);
+  border: 1px solid #fd611b;
   background: rgb(253, 97, 27);
   text-align: center;
   color: #fff;
