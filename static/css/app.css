@@ -725,7 +725,7 @@ ul.ks-cboxtags li label::before {
   -webkit-font-smoothing: antialiased;
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
-  font-size: 12px;
+  font-size: 18px;
   padding: 2px 6px 2px 2px;
   content: "\00d7";
   transition: transform 0.3s ease-in-out;
