@@ -12,6 +12,7 @@ from models import db, connect_db, User, Groceries, Favorites
 
 
 CURR_USER_KEY = "curr_user"
+API_KEY = os.environ.get('API_KEY')
 
 app = Flask(__name__)
 
