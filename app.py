@@ -142,7 +142,7 @@ def show_user_profile(user_id):
     user = User.query.get_or_404(user_id)
 
     groc_count = (Groceries.query.filter(Groceries.user_id == g.user.id)).count()
-    fav_count = (Groceries.query.filter(Groceries.user_id == g.user.id)).count()
+    fav_count = (Favorites.query.filter(Favorites.user_id == g.user.id)).count()
 
 
     return render_template('users.html', user=user, groc_count = groc_count, fav_count = fav_count)
