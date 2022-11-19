@@ -727,7 +727,7 @@ ul.ks-cboxtags li label::before {
   font-weight: 900;
   font-size: 12px;
   padding: 2px 6px 2px 2px;
-  content: "\f067";
+  content: "\2713";
   transition: transform 0.3s ease-in-out;
 }
 

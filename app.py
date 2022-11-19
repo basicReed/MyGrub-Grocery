@@ -16,14 +16,13 @@ API_KEY = os.environ.get('API_KEY')
 
 app = Flask(__name__)
 
-# heroku_url = 'postgres://bddecrhmexgnfb:0b24fd05a331cd1ff6f6577dcac87be7a0974e580dfbce99ee6e81c46e666ec7@ec2-54-174-31-7.compute-1.amazonaws.com:5432/d9tbu3cpq18dlh'
 
 uri = os.environ.get('DATABASE_URL') 
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
-# (os.environ.get(uri, 'postgresql:///mygrub'))
+# (os.environ.get('postgresql:///mygrub'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
