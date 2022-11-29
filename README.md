@@ -53,6 +53,7 @@ This application is for searching recipes from API's while filtering the needs o
 ## Technologies Used
 The project is mostly written in Python while using JavaScript for some client facing fucntionality.  It's also using [Flask-SQLAlchemy](https://github.com/pallets/flask-sqlalchemy) as a framework, [SQLAlchemy](https://github.com/sqlalchemy/sqlalchemy) as an ORM, and backed by a [PostgreSQL](https://github.com/postgres/postgres) database.
 
+I utilized several extensions for Flask, including [Flask-SQLAlchemy](https://github.com/pallets/flask-sqlalchemy), [Flask-WTForms](https://github.com/lepture/flask-wtf), and [Flask-Bcrypt](https://github.com/maxcountryman/flask-bcrypt).
 
 ## APIs
 
