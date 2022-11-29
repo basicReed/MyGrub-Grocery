@@ -1,10 +1,13 @@
 # MyGrub Grocery
 
+<img width="1405" alt="MyGrub Home" src="https://user-images.githubusercontent.com/109553225/204412556-0c2767b4-614d-464f-8864-4a891ef2ca86.png">
 
 ## Demo
+
 A demo is available at https://mygrub.herokuapp.com/.
 
 ## Desciption
+
 This application serves as my first capstone for Springboard's Software Engineering Career Track. MyGrub is a space to search for recipes while filtering out allergies and other ingredients.  Users can save recipes to account favorites or add ingredients to their shopping list if it's not already in it. 
 
 ## Features
