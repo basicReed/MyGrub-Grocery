@@ -23,8 +23,8 @@ This application is for searching recipes from API's while filtering the needs o
 - Add and remove items to and from grocery list 
 
 ## User Flow
-
 - A user can log in or register a new account.  Successful registration logs the user in
+- <img width="200" alt="MyGrub Log-in" src="https://user-images.githubusercontent.com/109553225/204423122-125add6c-dbd7-4331-8b75-b0cc2e582947.png">
 - The user is presented with a number random recipes and a search bar with options to search and filter out ingredients based on intoleraces selected.
 - The search form, when submited, displays the top results based on search peramiters.
 - If the search is empty or no results are found they will be prompted with a message relecting the issue.
