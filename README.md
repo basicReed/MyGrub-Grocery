@@ -34,8 +34,10 @@ I utilized Spoonaculars free recipe and ingredients API for the search and filte
 
 ## Testing
 
-Requires a postgres database named mygrub_test. In the top-level directory, run: 
-""" python3 -m unittest """
+Requires a postgres database named `mygrub_test`. In the top-level directory, run: 
+```
+python3 -m unittest
+```
 
 ## Looking Forward
 
